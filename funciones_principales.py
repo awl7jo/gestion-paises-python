@@ -1,3 +1,5 @@
+
+from gestion_paises import *
 from gestion_paises import ARCHIVO_CSV
 import csv
 
@@ -56,6 +58,7 @@ def agregar_pais(paises):
         except ValueError as e:
             print(f"Error: {e}")
 
+
     while True:
         try:
             continente = input("Continente: ").strip()
@@ -80,4 +83,4 @@ def agregar_pais(paises):
     
 
 
-            
+
