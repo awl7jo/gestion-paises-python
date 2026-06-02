@@ -4,6 +4,8 @@ import os
 
 ARCHIVO_CSV = 'paises.csv'
 
+# Validaciones
+
 def pedir_texto(mensaje):
     while True:
         texto = input(mensaje).strip()
@@ -26,6 +28,9 @@ def pedir_entero(mensaje):
 
         except:
             print("Debe ingresar un número válido.")
+            
+
+# Funciones de archivos
             
 def cargar_paises():
     paises = []
@@ -53,6 +58,33 @@ def cargar_paises():
 
     return paises
 
+def guardar_paises(paises):
+    try:
+        with open(ARCHIVO_CSV, 'w', encoding='utf-8', newline="") as archivo:
+            campos = ['nombre', 'poblacion', 'superficie', 'continente']
+            escritor = csv.DictWriter(archivo, fieldnames=campos)
+            escritor.writeheader()
+            escritor.writerows(paises)
+            print('Datos guardados correctamente ')
+    except PermissionError:
+        print(f'Error, no tenes permisos para escribir en {ARCHIVO_CSV}')
+    except Exception as e:
+        print(f'Error inesperado al guardar: {e}')
+
+# Funciones principales
+
+def mostrar_paises(paises):
+
+    print("\n=== LISTA DE PAÍSES ===")
+
+    for pais in paises:
+
+        print("----------------------------")
+        print(f"Nombre: {pais['nombre']}")
+        print(f"Población: {pais['poblacion']}")
+        print(f"Superficie: {pais['superficie']} km²")
+        print(f"Continente: {pais['continente']}")
+
 
 def actualizar_datos_paises(paises):
     print("\n=== ACTUALIZAR PAIS ===")
@@ -69,6 +101,18 @@ def actualizar_datos_paises(paises):
             print("Datos actualizados con exito")
             return
     print("Pais no encontrado")
+    
+def buscar_pais(paises):
+    print("\n=== BUSCAR PAIS ===")
+    buscar = pedir_texto("Ingrese el  nombre del pais o parte del nombre: ")
+    encontrados = []
+    for pais in paises:
+        if buscar.lower() in pais["nombre"].lower():
+            encontrados.append(pais)
+    if len(encontrados) == 0:
+        print("No se encontraron resultados.")
+        return
+    mostrar_paises(encontrados)
     
     
 
