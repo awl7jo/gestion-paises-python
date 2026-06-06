@@ -3,7 +3,7 @@ from gestion_paises import *
 from gestion_paises import ARCHIVO_CSV
 import csv
 
-def guardar_paises(paises):
+def guardar_paises(paises): #Sobreescribe el archivo CSV con la lista de países actualizada.#
     try:
         with open(ARCHIVO_CSV, 'w', encoding='utf-8', newline="") as archivo:
             campos = ['nombre', 'poblacion', 'superficie', 'continente']
@@ -14,8 +14,8 @@ def guardar_paises(paises):
     except PermissionError:
         print(f'Error, no tenes permisos para escribir en {ARCHIVO_CSV}')
     except Exception as e:
-        print(f'Error inesperado al guardar: {e}')
-def agregar_pais(paises):
+        print(f'Error inesperado al guardar: {e}') 
+def agregar_pais(paises): #Pide los datos de un nuevo país al usuario, los valida y los agrega a la lista.
     print('\n----AGREGAR PAIS----')
     print("(escribi 'cancelar' para volver al menu)\n")
     while True:
@@ -28,8 +28,8 @@ def agregar_pais(paises):
                 raise ValueError("El nombre no puede estar vacio")
             if not all(c.isalpha() or c.isspace() for c in nombre):
                 raise ValueError("El nombre solo puede contener letras y espacios.")
-            #if buscar_exacto(paises, nombre): is not None:
-            # raise ValueError(F"Ya existe un pais llamado {nombre}")#
+            if buscar_exacto(paises, nombre) is not None:
+                raise ValueError(f"Ya existe un pais llamado {nombre}")
             break
         except ValueError as e:
             print(f"Error, {e}")
@@ -41,10 +41,10 @@ def agregar_pais(paises):
                 return
             poblacion = int(entrada)
             if poblacion <= 0:
-                raise ValueError("La poblacion debe ser mayor a 0")
+                raise ValueError("La poblacion debe ser mayor a 0.")
             break
         except ValueError as e:
-            print(f"Error, {e}")
+            print(f"Error: {e}")
     while True:
         try:
             entrada = input("Superficie en km²: ").strip()
@@ -81,6 +81,22 @@ def agregar_pais(paises):
     guardar_paises(paises)
     print(f"País '{nombre}' agregado exitosamente.")
     
+    ###
+    #Busca un país por nombre exacto sin distinguir mayúsculas.
+    #Devuelve el diccionario del país o None si no lo encuentra.
+    #Se usa internamente por agregar_pais y actualizar_pais.
+    ###
+def buscar_exacto(paises, nombre):
+    try:
+        if not nombre or not isinstance(nombre, str):
+            raise ValueError("Nombre inválido.")
+        for pais in paises:
+            if pais["nombre"].lower() == nombre.lower():
+                return pais
+    except ValueError:
+        return None
+    return None
+
 
 
 

@@ -32,7 +32,7 @@ def pedir_entero(mensaje):
 
 # Funciones de archivos
             
-def cargar_paises():
+def cargar_paises():  #Lee el archivo CSV y devuelve una lista de diccionarios con los datos de cada país.#
     paises = []
 
     try:
