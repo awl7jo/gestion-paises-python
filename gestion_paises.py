@@ -1,4 +1,3 @@
-from funciones_principales import *
 import csv
 import os
 
@@ -30,16 +29,16 @@ def pedir_entero(mensaje):
             print("Debe ingresar un número válido.")
             
 
-def buscar_exacto(paises, nombre):
-    try:
-        if not nombre or not isinstance(nombre, str):
-            raise ValueError("Nombre inválido.")
-        for pais in paises:
-            if pais["nombre"].lower() == nombre.lower():
-                return pais
-    except ValueError:
-        return None
-    return None
+#def buscar_exacto(paises, nombre):
+ #   try:
+  #      if not nombre or not isinstance(nombre, str):
+   #         raise ValueError("Nombre inválido.")
+    #    for pais in paises:
+     #       if pais["nombre"].lower() == nombre.lower():
+      #          return pais
+    #except ValueError:
+     #   return None
+    #return None
     #Busca un país por nombre exacto sin distinguir mayúsculas.
     #Devuelve el diccionario del país o None si no lo encuentra.
     #Se usa internamente por agregar_pais y actualizar_pais.
@@ -89,16 +88,21 @@ def guardar_paises(paises):
 # Funciones principales
 
 def mostrar_paises(paises):
+    try:
+        if not paises:
+            raise ValueError("No hay paises cargados")
+        else:
+            print("\n=== LISTA DE PAÍSES ===")
 
-    print("\n=== LISTA DE PAÍSES ===")
+            for pais in paises:
 
-    for pais in paises:
-
-        print("----------------------------")
-        print(f"Nombre: {pais['nombre']}")
-        print(f"Población: {pais['poblacion']}")
-        print(f"Superficie: {pais['superficie']} km²")
-        print(f"Continente: {pais['continente']}")
+                print("----------------------------")
+                print(f"Nombre: {pais['nombre']}")
+                print(f"Población: {pais['poblacion']}")
+                print(f"Superficie: {pais['superficie']} km²")
+                print(f"Continente: {pais['continente']}")
+    except ValueError as e:
+        print(e)
 
 
 def actualizar_datos_paises(paises):
@@ -143,7 +147,7 @@ def agregar_pais(paises): #Pide los datos de un nuevo país al usuario, los vali
                 raise ValueError("El nombre no puede estar vacio")
             if not all(c.isalpha() or c.isspace() for c in nombre):
                 raise ValueError("El nombre solo puede contener letras y espacios.")
-            if buscar_exacto(paises, nombre) is not None:
+            if buscar_pais(paises) is not None:
                 raise ValueError(f"Ya existe un pais llamado {nombre}")
             break
         except ValueError as e:
@@ -251,6 +255,30 @@ def filtrar_superficie(paises):
     except ValueError as e:
         print(e)
         
+def filtrar_paises(paises):
+    print('\n--- FILTRAR PAISES ---')
+    try:
+        if not paises:
+            raise ValueError('No hay paises cargados')
+        print('1. Por continente')
+        print('2. Por rango de poblacion')
+        print('3. Por rango de superficie')
+        print('0. Volver al menu principal')
+        opcion = int(input('Ingrese una opcion ')).strip()
+
+        opciones = {'1': filtrar_continente,
+                    '2': filtrar_poblacion,
+                    '3': filtrar_superficie
+
+                    }
+        if opcion == '0':
+            return
+        if opcion not in opciones:
+            raise ValueError('Opcion invalida. ingresa un numero del 0 al 3.')
+        opciones[opcion](paises)
+    except ValueError as e:
+        print(f'Error: {e}')
+        
 #Ordenamiento
 
 def obtener_nombre(pais):
@@ -315,6 +343,125 @@ def ordenar_paises(paises):
         return
 
     mostrar_paises(ordenados)
+    
+def mostrar_estadisticas(paises):
+
+    print("\n=== ESTADÍSTICAS ===")
+
+    if len(paises) == 0:
+        print("No hay países cargados.")
+        return
+
+    # Buscar mayor población
+    mayor = paises[0]
+
+    for pais in paises:
+
+        if pais["poblacion"] > mayor["poblacion"]:
+            mayor = pais
+
+    # Buscar menor población
+    menor = paises[0]
+
+    for pais in paises:
+
+        if pais["poblacion"] < menor["poblacion"]:
+            menor = pais
+            
+    mayor_sup = paises[0]
+    for pais in paises:
+        if pais["superficie"] > mayor_sup["superficie"]:
+            mayor_sup = pais
+
+    menor_sup = paises[0]
+    for pais in paises:
+        if pais["superficie"] < menor_sup["superficie"]:
+            menor_sup = pais
+
+    # Promedios
+    suma_poblacion = 0
+    suma_superficie = 0
+
+    for pais in paises:
+
+        suma_poblacion += pais["poblacion"]
+        suma_superficie += pais["superficie"]
+
+    promedio_poblacion = suma_poblacion / len(paises)
+    promedio_superficie = suma_superficie / len(paises)
+
+    # Cantidad por continente
+    continentes = {}
+
+    for pais in paises:
+
+        continente = pais["continente"]
+
+        if continente in continentes:
+            continentes[continente] += 1
+        else:
+            continentes[continente] = 1
+
+    print("\nPaís con mayor población:")
+    print(mayor["nombre"], "-", mayor["poblacion"])
+
+    print("\nPaís con menor población:")
+    print(menor["nombre"], "-", menor["poblacion"])
+    
+    print("\nPaís con mayor superficie:")
+    print(mayor_sup["nombre"], "-", mayor_sup["superficie"])
+    
+    print("\nPaís con menor superficie:")
+    print(menor_sup["nombre"], "-", menor_sup["superficie"])
+
+    print(f"\nPromedio de población: {promedio_poblacion:.2f}")
+    print(f"Promedio de superficie: {promedio_superficie:.2f}")
+    
+
+    print("\nCantidad de países por continente:")
+
+    for continente in continentes:
+        print(continente, ":", continentes[continente])
+        
+def menu():
+    paises = cargar_paises()       
+    while True:
+        print("""Sistema de gestión de paises
+            
+    1) Mostrar todos los paises
+    2) Agregar un país
+    3) Actualizar un país
+    4) Buscar 
+    5) Buscar por nombre exacto
+    5) Filtrar país
+    6) Ordenar paises
+    7) Mostrar estadísticas
+    8) Salir""")
+        print("=" * 40)
+        
+        opcion = input("Elija una opción: ")
+        match opcion:
+            case "1":
+                mostrar_paises(paises)
+            case "2":
+                agregar_pais(paises)
+            case "3":
+                actualizar_datos_paises(paises)
+            case "4":
+                buscar_pais(paises)
+            case "5":
+                filtrar_paises(paises)
+            case "6":
+                ordenar_paises(paises)
+            case "7":
+                mostrar_estadisticas(paises)
+            case "8":
+                print("Saliendo..")
+                break
+            case _:
+                print("Opción invalida")
+
+menu()
     
     
     
