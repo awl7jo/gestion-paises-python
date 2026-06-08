@@ -197,5 +197,41 @@ def agregar_pais(paises): #Pide los datos de un nuevo país al usuario, los vali
     print(f"País '{nombre}' agregado exitosamente.")
     
     
+#FILTROS
+
+def filtrar_poblacion(paises):
+    minima = pedir_entero("Ingrese la población mínima: ")
+    maxima = pedir_entero("Ingrese la población máxima: ")
+
+    filtrados = []
+
+    for pais in paises:
+
+        if minima <= pais["poblacion"] <= maxima:
+            filtrados.append(pais)
+
+    if len(filtrados) == 0:
+        print("No se encontraron países.")
+    else:
+        mostrar_paises(filtrados)
+
+def filtrar_superficie(paises):
+    try:
+        maxima = pedir_entero("Ingrese la superficie máxima: ")
+        minima = pedir_entero("Ingrese la superficie mínima: ")
+        if minima > maxima:
+            raise ValueError("La mínima no puede ser mayor que la máxima")
+        filtrados = []
+        for pais in paises:
+            if minima <= pais["superficie"] <= maxima:
+                filtrados.append(pais)
+        if len(filtrados) == 0:
+            print("No se encontraron paises")
+        else:
+            mostrar_paises(filtrados)
+    except ValueError as e:
+        print(e)
+    
+    
     
 
