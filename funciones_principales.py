@@ -1,19 +1,3 @@
-def filtrar_superficie(paises):
-
-    minimo = pedir_entero("Superficie mínima: ")
-    maximo = pedir_entero("Superficie máxima: ")
-
-    filtrados = []
-
-    for pais in paises:
-
-        if minimo <= pais["superficie"] <= maximo:
-            filtrados.append(pais)
-
-    if len(filtrados) == 0:
-        print("No se encontraron países.")
-    else:
-        mostrar_paises(filtrados)
 
 def filtrar_continente(paises):
     try:
