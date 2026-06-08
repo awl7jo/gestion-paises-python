@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 def filtrar_paises(paises):
     print('\n--- FILTRAR PAISES ---')
@@ -22,3 +23,5 @@ def filtrar_paises(paises):
         opciones[opcion](paises)
     except ValueError as e:
         print(f'Error: {e}')
+=======
+>>>>>>> a522e7f0885b135cf0a875bde6025c16dd318711
