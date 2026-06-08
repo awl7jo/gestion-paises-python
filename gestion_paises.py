@@ -199,6 +199,25 @@ def agregar_pais(paises): #Pide los datos de un nuevo país al usuario, los vali
     
 #FILTROS
 
+def filtrar_continente(paises):
+    try:
+        continente = input("Ingresá el continente: ").strip()
+        if not continente:
+            raise ValueError("El continente no puede estar vacío.")
+
+        filtrados = []
+        for pais in paises:
+            if pais["continente"].lower() == continente.lower():
+                filtrados.append(pais)
+
+        if len(filtrados) == 0:
+            raise ValueError(f"No se encontraron países en '{continente}'.")
+
+        mostrar_paises(filtrados)
+
+    except ValueError as e:
+        print(f"Error: {e}")
+
 def filtrar_poblacion(paises):
     minima = pedir_entero("Ingrese la población mínima: ")
     maxima = pedir_entero("Ingrese la población máxima: ")
@@ -231,6 +250,71 @@ def filtrar_superficie(paises):
             mostrar_paises(filtrados)
     except ValueError as e:
         print(e)
+        
+#Ordenamiento
+
+def obtener_nombre(pais):
+    return pais["nombre"]
+
+
+def obtener_poblacion(pais):
+    return pais["poblacion"]
+
+
+def obtener_superficie(pais):
+    return pais["superficie"]
+
+
+def ordenar_paises(paises):
+
+    print("\n=== ORDENAR PAÍSES ===")
+    print("1. Nombre")
+    print("2. Población")
+    print("3. Superficie")
+
+    opcion = input("Seleccione opción: ")
+
+    if opcion == "1":
+
+        ordenados = sorted(paises, key=obtener_nombre)
+
+    elif opcion == "2":
+
+        tipo = input("Ascendente (A) o Descendente (D): ").upper()
+
+        if tipo == "D":
+            ordenados = sorted(
+                paises,
+                key=obtener_poblacion,
+                reverse=True
+            )
+        else:
+            ordenados = sorted(
+                paises,
+                key=obtener_poblacion
+            )
+
+    elif opcion == "3":
+
+        tipo = input("Ascendente (A) o Descendente (D): ").upper()
+
+        if tipo == "D":
+            ordenados = sorted(
+                paises,
+                key=obtener_superficie,
+                reverse=True
+            )
+        else:
+            ordenados = sorted(
+                paises,
+                key=obtener_superficie
+            )
+
+    else:
+        print("Opción inválida.")
+        return
+
+    mostrar_paises(ordenados)
     
     
     
