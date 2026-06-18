@@ -41,9 +41,9 @@ La aplicación está escrita en Python y permite gestionar información sobre di
 3. Asegurarse de que el archivo `paises.csv` se encuentre en la misma carpeta que el programa.
 4. Ejecutar el archivo principal:
 
-```bash
+
 python main.py
-```
+
 
 ## Ejemplo de uso
 
@@ -51,11 +51,12 @@ python main.py
 - Seleccionar la opción **4** para buscar un país por nombre.
 - Seleccionar la opción **7** para visualizar estadísticas del conjunto de datos.
 
-## Documentación
+## Participación de los integrantes
+Integrante 1: [Alejo Reinoso] – Validaciones, pruebas, documentación y desarollo de ciertas funciones.
+Integrante 2: [Gonzalo Carmona] – Desarrollo de funciones, pruebas y menú principal.
 
-- PDF del informe: **(agregar enlace cuando lo suban)**
-- Video demostrativo: **(agregar enlace cuando lo suban)**
+## Video
+- Video demostrativo: (https://drive.google.com/file/d/1o2ZSjEVt6CHVBDWIxEja-z5riItZL19B/view?usp=sharing)
 
 ## Repositorio
-
-Este proyecto fue realizado como parte del Trabajo Práctico Integrador de Programación 1.
+https://github.com/awl7jo/gestion-paises-python
