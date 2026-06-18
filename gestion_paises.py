@@ -1,5 +1,4 @@
 import csv
-import os
 
 ARCHIVO_CSV = 'paises.csv'
 
